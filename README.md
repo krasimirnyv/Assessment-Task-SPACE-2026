@@ -1,10 +1,10 @@
 # Space Program — SPACE 2026 Console Mission
 
-**Space Program** is a C#/.NET console application that simulates a rescue mission in a cosmic navigation map. The application generates a random space map, places one to three astronauts, locates the Space Station, and calculates each astronaut's safest route through open space, asteroids, and space debris.
+**Space Program** is a C# / .NET console application that simulates a rescue mission in a cosmic navigation map. The application generates a random space map, places one to three astronauts, locates the Space Station and calculates each astronaut's safest route through open space, asteroids and space debris.
 
-The project was built as a solution for the **SPACE 2026 technical assessment**. The main goal is to guide multiple astronauts back to the Space Station by finding the shortest valid path, displaying the route visually, and reporting failed missions first when an astronaut cannot reach the destination.
+The project was built as a solution for the **SPACE 2026 Technical Assessment** provided by **Hitachi Solutions Europe (Bulgaria)**. The main goal is to guide multiple astronauts back to the Space Station by finding the shortest valid path, displaying the route visually and reporting failed missions first when an astronaut cannot reach the destination.
 
-> The implementation focuses on clean object-oriented design, swappable pathfinding algorithms, custom validation, structured error handling, console rendering, dynamic map generation, and optional SMTP email reporting.
+> The implementation focuses on clean object-oriented design, swappable pathfinding algorithms, custom validation, structured error handling, console rendering, dynamic map generation and optional SMTP email reporting.
 
 ---
 
@@ -22,9 +22,7 @@ The project was built as a solution for the **SPACE 2026 technical assessment**.
 - [Validation and error handling](#validation-and-error-handling)
 - [Tech stack](#tech-stack)
 - [Getting started](#getting-started)
-- [Screenshots](#screenshots)
 - [Project structure](#project-structure)
-- [Future improvements](#future-improvements)
 - [License](#license)
 
 ---
@@ -39,8 +37,8 @@ Each generated map contains:
 |---|---|---:|---:|
 | `S1`, `S2`, `S3` | Astronaut starting positions | Yes | 1 |
 | `F` | Final destination / Space Station | Yes | 1 |
-| `O` | Open space | Yes | 1 |
-| `D` | Space debris | Yes | 2 |
+| `O` | Open Space | Yes | 1 |
+| `D` | Space Debris | Yes | 2 |
 | `X` | Asteroid | No | Not allowed |
 | `*` | Calculated route segment | Output only | - |
 
@@ -52,12 +50,12 @@ The mission service processes every astronaut independently and creates a missio
 
 The rules implemented in the project follow the assessment requirements:
 
-- The application is a C#/.NET console application.
-- The map dimensions must be within the allowed range: `2 <= rows <= 100` and `2 <= columns <= 100`.
+- The application is a C# / .NET console application.
+- The map dimensions must be within the allowed range: `2 >= rows <= 100` and `2 >= columns <= 100`.
 - The map contains at least one astronaut and at most three astronauts.
-- Astronauts can move only in four directions: up, down, left, and right.
+- Astronauts can move only in four directions: up, down, left and right.
 - Asteroids are blocked cells and cannot be entered.
-- The route is shown with `*`, without replacing the astronaut start position or the Space Station.
+- The route is shown with `*`, without replacing the Astronaut start position or the Space Station.
 - Unreachable astronauts are reported as failed missions.
 - Successful astronauts are ordered by shortest distance / total movement cost.
 - Space debris is supported as a weighted cell with movement cost `2`.
@@ -70,7 +68,7 @@ The rules implemented in the project follow the assessment requirements:
 
 ### Dynamic cosmic map generation
 
-The project does not rely on a hardcoded map. The user enters valid dimensions, and `RandomMapGenerator` creates a new cosmic environment. It randomly places the Space Station, generates between one and three astronauts, and fills the remaining cells with open space, asteroids, and space debris.
+The project does not rely on a hardcoded map. The user enters valid dimensions, and `RandomMapGenerator` creates a new cosmic environment. It randomly places the Space Station, generates between one and three astronauts and fills the remaining cells with open space, asteroids and space debris.
 
 ### Multiple astronaut processing
 
@@ -99,7 +97,7 @@ IMissionService service = new MissionService(dijkstra);
 
 ### Optional email report
 
-After the mission report is rendered, the application asks the user whether the report should be sent by email. If the user presses `Y`, the application reads and validates the sender Gmail address, Gmail App Password, receiver email, and subject. The report body is the rendered mission output.
+After the mission report is rendered, the application asks the user whether the report should be sent by email. If the user presses `Y`, the application reads and validates the sender Gmail address, Gmail App Password, receiver email and subject. The report body is the rendered mission output.
 
 ---
 
@@ -334,6 +332,24 @@ sequenceDiagram
     Email-->>Engine: Success / exception
 ```
 
+#### Component responsibilities
+
+| Component | Responsibility |
+|---|---|
+| `Engine` | Coordinates the whole application flow |
+| `RandomMapGenerator` | Generates the cosmic map dynamically |
+| `SpaceObjectFactory` | Creates concrete space objects |
+| `MissionService` | Processes astronauts and produces a mission report |
+| `BfsPathFinder` | Calculates shortest path in unweighted maps |
+| `DijkstraPathFinder` | Calculates lowest-cost path in weighted maps |
+| `PathResultBuilder` | Builds successful and failed mission results |
+| `TextMapRenderer` | Converts maps and mission reports to console text |
+| `EmailSender` | Sends rendered reports through Gmail SMTP |
+| `DimensionValidator` | Validates map dimensions |
+| `EmailValidator` | Validates email-related input |
+| `ConsoleReader` / `ConsoleWriter` | Wrap console input and output |
+| `ConsoleKey` | Converts key presses into `UserCommand` values |
+
 ---
 
 ## Email reporting
@@ -347,7 +363,7 @@ The email feature is implemented as an optional mission-report export step. It u
 | SSL | `true` |
 | Default credentials | `false` |
 
-The application expects a **Gmail App Password**, not the normal Gmail account password. The sender email, App Password, receiver email, and subject are requested from the user only when the user chooses to send the report.
+The application expects a **Gmail App Password**, not the normal Gmail account password. The sender email, App Password, receiver email and subject are requested from the user only when the user chooses to send the report.
 
 The email flow uses these components:
 
@@ -390,7 +406,7 @@ Maximum size: 100
 | Subject | Required |
 | Body | Required |
 
-Custom exceptions are stored under `GCommon/Exceptions` and provide focused messages for invalid input, null input, invalid space objects, and email sending failures.
+Custom exceptions are stored under `GCommon/Exceptions` and provide focused messages for invalid input, null input, invalid space objects and email sending failures.
 
 ---
 
@@ -401,10 +417,9 @@ Custom exceptions are stored under `GCommon/Exceptions` and provide focused mess
 | Language | C# |
 | Runtime | .NET 8 |
 | Application type | Console application |
-| Data structures | Dictionary, Queue, HashSet, PriorityQueue |
 | Pathfinding | BFS and Dijkstra |
 | Email | `System.Net.Mail` / Gmail SMTP |
-| Architecture style | OOP, interface-based design, dependency inversion |
+| Architecture style | OOP, interface-based design, SOLID |
 
 ---
 
@@ -428,8 +443,8 @@ The project targets:
 ### Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/<your-repository-name>.git
-cd <your-repository-name>
+git clone https://github.com/krasimirnyv/Assessment-Task-SPACE-2026.git
+cd Assessment-Task-SPACE-2026
 ```
 
 ### Build
@@ -448,38 +463,6 @@ If the project is placed directly at the repository root, run:
 
 ```bash
 dotnet run
-```
-
----
-
-## Screenshots
-
-Add screenshots after the first stable release of the console UI.
-
-### Generated cosmic map
-
-<p align="center">
-  <img src="docs/images/generated-map-placeholder.png" width="700px" alt="Generated cosmic map placeholder">
-</p>
-
-### Mission report with calculated paths
-
-<p align="center">
-  <img src="docs/images/mission-report-placeholder.png" width="700px" alt="Mission report placeholder">
-</p>
-
-### Email report prompt
-
-<p align="center">
-  <img src="docs/images/email-report-placeholder.png" width="700px" alt="Email report prompt placeholder">
-</p>
-
-Recommended repository paths:
-
-```text
-docs/images/generated-map.png
-docs/images/mission-report.png
-docs/images/email-report.png
 ```
 
 ---
@@ -540,43 +523,6 @@ SpaceProgram
 ├── Program.cs
 └── SpaceProgram.csproj
 ```
-
----
-
-## Component responsibilities
-
-| Component | Responsibility |
-|---|---|
-| `Engine` | Coordinates the whole application flow |
-| `RandomMapGenerator` | Generates the cosmic map dynamically |
-| `SpaceObjectFactory` | Creates concrete space objects |
-| `MissionService` | Processes astronauts and produces a mission report |
-| `BfsPathFinder` | Calculates shortest path in unweighted maps |
-| `DijkstraPathFinder` | Calculates lowest-cost path in weighted maps |
-| `PathResultBuilder` | Builds successful and failed mission results |
-| `TextMapRenderer` | Converts maps and mission reports to console text |
-| `EmailSender` | Sends rendered reports through Gmail SMTP |
-| `DimensionValidator` | Validates map dimensions |
-| `EmailValidator` | Validates email-related input |
-| `ConsoleReader` / `ConsoleWriter` | Wrap console input and output |
-| `ConsoleKey` | Converts key presses into `UserCommand` values |
-
----
-
-## Future improvements
-
-The current implementation covers the main mission and several bonus objectives. Possible next steps include:
-
-| Improvement | Description |
-|---|---|
-| Manual map input mode | Allow the user to enter a full custom map instead of generating one |
-| Algorithm selection | Let the user choose BFS or Dijkstra at runtime |
-| Screenshot documentation | Add real console screenshots under `docs/images` |
-| Unit tests | Add tests for validators, pathfinding, map generation, and rendering |
-| Configuration file | Move SMTP settings to configuration instead of constants |
-| Safer email secret handling | Read the Gmail App Password from environment variables |
-| Better map balancing | Add configurable asteroid/debris probability |
-| Iterative restart loop | Replace recursive `RunAsync()` restart with a loop-based game session |
 
 ---
 
