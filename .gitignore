@@ -22,6 +22,10 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+*.user
+*.suo
+*.rsuser
+*.DotSettings.user
 
 # .NET Core
 project.lock.json
@@ -37,6 +41,7 @@ ScaffoldingReadMe.txt
 *.snupkg
 
 # dotenv environment variables file
+*.secrets.json
 .env
 
 # Others
